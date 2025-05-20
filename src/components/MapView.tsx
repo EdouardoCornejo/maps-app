@@ -14,7 +14,7 @@ export const MapView = () => {
     if (!isLoading && mapDiv.current) {
       const map = new mapboxgl.Map({
         container: mapDiv.current,
-        style: "mapbox://styles/mapbox/light-v10",
+        style: "mapbox://styles/mapbox/dark-v10",
         center: userLocation,
         zoom: 9,
       });
