@@ -1,6 +1,9 @@
-import { useRef, type ChangeEvent } from "react";
+import { useContext, useRef, type ChangeEvent } from "react";
+import { PlacesContext } from "../context";
+import { SearchResults } from "./SearchResults";
 
 export const SearchBar = () => {
+  const { searchPlacesByTerm } = useContext(PlacesContext);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onQueryChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -9,7 +12,7 @@ export const SearchBar = () => {
     }
 
     debounceRef.current = setTimeout(() => {
-      console.log(event.target.value);
+      searchPlacesByTerm(event.target.value)
     }, 350);
   };
 
@@ -21,6 +24,8 @@ export const SearchBar = () => {
         placeholder="Buscar lugar..."
         onChange={onQueryChanged}
       />
+      
+      <SearchResults />
     </div>
   );
 };
