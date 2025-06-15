@@ -1,9 +1,17 @@
-import mapboxgl, { Map as MapboxMap, Marker, Popup } from "mapbox-gl";
+import mapboxgl, {
+  LngLatBounds,
+  Map as MapboxMap,
+  Marker,
+  Popup,
+  type AnySourceData,
+} from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MapContext } from "./MapContext";
 import { useContext, useEffect, useReducer, type JSX } from "react";
 import { mapReducer } from "./mapReducer";
 import { PlacesContext } from "../places/PlacesContext";
+import { directionsApi } from "../../apis/directionsApi";
+import type { DirectionsResponse } from "../../interfaces";
 
 export interface MapState {
   isMapReady: boolean;
@@ -41,6 +49,75 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     });
   };
 
+  const getRouteBetweenPoints = async (
+    start: [number, number],
+    end: [number, number]
+  ) => {
+    const { data } = await directionsApi.get<DirectionsResponse>(
+      `/${start.join(",")};${end.join(",")}`
+    );
+    const { distance, duration, geometry } = data.routes[0];
+    const { coordinates: coords } = geometry;
+
+    let kms = distance / 1000;
+    kms = Math.round(kms * 100);
+    kms /= 100;
+
+    const minutes = Math.floor(duration / 60);
+    console.log("kms", kms, "minutes", minutes);
+
+    const bounds = new LngLatBounds(start, start);
+
+    for (const [coord0, coord1] of coords) {
+      bounds.extend([coord0, coord1]);
+    }
+
+    state.map?.fitBounds(bounds, {
+      padding: 200,
+    });
+
+    //Polyline
+    const sourceData: AnySourceData = {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates: coords,
+            },
+          },
+        ],
+      },
+    };
+
+    if (state.map?.getLayer("RouteString")) {
+      state.map.removeLayer("RouteString");
+      state.map.removeSource("RouteString");
+    }
+
+    //Remove polyline if it exists
+    state.map?.addSource("RouteString", sourceData);
+
+    state.map?.addLayer({
+      id: "RouteString",
+      type: "line",
+      source: "RouteString",
+      layout: {
+        "line-cap": "round",
+        "line-join": "round",
+      },
+      paint: {
+        "line-color": "#61DAFB",
+        "line-width": 3,
+        "line-opacity": 0.75,
+      },
+    });
+  };
+
   useEffect(() => {
     state.markers.forEach((marker) => marker.remove());
     const newMarkers: Marker[] = [];
@@ -69,6 +146,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         ...state,
         // methods
         setMap,
+        getRouteBetweenPoints,
       }}
     >
       {children}
