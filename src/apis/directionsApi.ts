@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import { mapboxEndpoints } from '../constant';
+import { getMapboxToken } from '../utils';
 
 
 const Geometries = {
@@ -12,7 +13,7 @@ const Geometries = {
 const Overview = {
     Simplified: 'simplified',
     Full: 'full',
-}
+} as const;
 
 
 export const directionsApi = axios.create({
@@ -22,6 +23,6 @@ export const directionsApi = axios.create({
         geometries: Geometries.Geojson,
         overview: Overview.Simplified,
         steps: false,
-        access_token: import.meta.env.VITE_MAPBOX_TOKEN,
+        access_token: getMapboxToken(),
     }
 })

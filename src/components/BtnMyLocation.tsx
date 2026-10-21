@@ -3,16 +3,17 @@ import { MapContext, PlacesContext } from "../context";
 
 export const BtnMyLocation = () => {
   const { map, isMapReady } = useContext(MapContext);
-  const { userLocation } = useContext(PlacesContext);
+  const { userLocation, isDefaultLocation } = useContext(PlacesContext);
 
   const onClick = () => {
-    if (!isMapReady) throw new Error("El mapa no esta listo");
-    if (!userLocation) throw new Error("No hay ubicacion de usuario");
+    if (!isMapReady || !userLocation) return;
     map?.flyTo({
       zoom: 14,
       center: userLocation,
     });
   };
+
+  if (isDefaultLocation) return null;
 
   return (
     <button

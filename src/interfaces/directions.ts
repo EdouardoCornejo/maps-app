@@ -11,20 +11,18 @@ export interface Route {
     duration:    number;
     distance:    number;
     legs:        Leg[];
-    geometry:    Geometry;
+    geometry:    RouteGeometry;
 }
 
-export interface Geometry {
+export interface RouteGeometry {
     coordinates: Array<number[]>;
     type:        GeometryType;
 }
 
-export enum GeometryType {
-    LineString = "LineString",
-}
+export type GeometryType = "LineString";
 
 export interface Leg {
-    via_waypoints: any[];
+    via_waypoints: unknown[];
     admins:        Admin[];
     weight:        number;
     duration:      number;
@@ -47,14 +45,10 @@ export interface Step {
     driving_side:  DrivingSide;
     weight:        number;
     mode:          Mode;
-    geometry:      Geometry;
+    geometry:      RouteGeometry;
 }
 
-export enum DrivingSide {
-    Left = "left",
-    Right = "right",
-    Straight = "straight",
-}
+export type DrivingSide = "left" | "right" | "straight";
 
 export interface Intersection {
     entry:              boolean[];
@@ -85,11 +79,7 @@ export interface MapboxStreetsV8 {
     class: Class;
 }
 
-export enum Class {
-    Secondary = "secondary",
-    Street = "street",
-    Tertiary = "tertiary",
-}
+export type Class = "secondary" | "street" | "tertiary";
 
 export interface Maneuver {
     type:           ManeuverType;
@@ -100,21 +90,11 @@ export interface Maneuver {
     modifier?:      Modifier;
 }
 
-export enum Modifier {
-    Left = "left",
-    Right = "right",
-    SlightLeft = "slight left",
-}
+export type Modifier = "left" | "right" | "slight left";
 
-export enum ManeuverType {
-    Arrive = "arrive",
-    Depart = "depart",
-    Turn = "turn",
-}
+export type ManeuverType = "arrive" | "depart" | "turn";
 
-export enum Mode {
-    Driving = "driving",
-}
+export type Mode = "driving";
 
 export interface Waypoint {
     distance: number;

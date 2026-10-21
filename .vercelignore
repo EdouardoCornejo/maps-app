@@ -1,0 +1,7 @@
+# Secrets live in Vercel env vars, never in the uploaded source
+.env
+.env.*
+!.env.template
+node_modules
+dist
+.playwright-mcp

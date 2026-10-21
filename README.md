@@ -1,3 +1,22 @@
+# Maps App
+
+## Configuración
+
+1. Copia `.env.template` a `.env` y completa `VITE_MAPBOX_TOKEN` con un token **público** (`pk.`) de Mapbox.
+2. `yarn install` y `yarn dev`.
+
+## Producción
+
+El token de Mapbox se incluye en el bundle y es visible en el navegador. Antes de publicar:
+
+- En [account.mapbox.com/access-tokens](https://account.mapbox.com/access-tokens/) crea un token solo para producción, con los scopes públicos por defecto (sin scopes secretos).
+- En **URL restrictions** agrega solo tu dominio de producción (p. ej. `https://midominio.com`). Usa otro token sin restricción, o con `http://localhost:5173`, para desarrollo.
+- Nunca uses un token secreto (`sk.`) en esta app.
+
+Si el usuario no comparte su ubicación, la app usa `DEFAULT_LOCATION` (`src/constant/mapbox.ts`).
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

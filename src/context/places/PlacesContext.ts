@@ -4,7 +4,8 @@ import type { Feature } from "../../interfaces";
 
 export interface PlacesContextProps {
     isLoading: boolean;
-    userLocation?: [number, number]; 
+    userLocation?: [number, number];
+    isDefaultLocation: boolean;
     isLoadingPlaces: boolean;
     places: Array<Feature>;
     searchPlacesByTerm: (query: string) => Promise<Array<Feature>>;

@@ -6,6 +6,10 @@ type PlacesAction = {
     payload: [number, number]
 }
     | {
+        type: 'setDefaultLocation',
+        payload: [number, number]
+    }
+    | {
         type: 'setPlaces',
         payload: Array<Feature>
     } | {
@@ -21,7 +25,15 @@ export const placesReducer = (state: PlacesState, action: PlacesAction): PlacesS
             return {
                 ...state,
                 isLoading: false,
-                userLocation: action.payload
+                userLocation: action.payload,
+                isDefaultLocation: false
+            }
+        case 'setDefaultLocation':
+            return {
+                ...state,
+                isLoading: false,
+                userLocation: action.payload,
+                isDefaultLocation: true
             }
         case 'setloadingPlaces':
             return {
