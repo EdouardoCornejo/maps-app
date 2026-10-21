@@ -1,73 +1,36 @@
 # Maps App
 
-## Configuración
+Aplicación de mapas hecha con React, TypeScript y Mapbox GL. Muestra tu ubicación, permite buscar lugares y trazar la ruta hacia ellos.
 
-1. Copia `.env.template` a `.env` y completa `VITE_MAPBOX_TOKEN` con un token **público** (`pk.`) de Mapbox.
-2. `yarn install` y `yarn dev`.
+## Funcionalidades
 
-## Producción
+- Mapa interactivo con Mapbox GL
+- Ubicación del usuario (con ubicación por defecto si no se comparte)
+- Búsqueda de lugares
+- Rutas en auto hacia el lugar seleccionado
 
-El token de Mapbox se incluye en el bundle y es visible en el navegador. Antes de publicar:
+## Stack
 
-- En [account.mapbox.com/access-tokens](https://account.mapbox.com/access-tokens/) crea un token solo para producción, con los scopes públicos por defecto (sin scopes secretos).
-- En **URL restrictions** agrega solo tu dominio de producción (p. ej. `https://midominio.com`). Usa otro token sin restricción, o con `http://localhost:5173`, para desarrollo.
-- Nunca uses un token secreto (`sk.`) en esta app.
+React 19 · TypeScript · Vite · Mapbox GL · Axios
 
-Si el usuario no comparte su ubicación, la app usa `DEFAULT_LOCATION` (`src/constant/mapbox.ts`).
+## Instalación
 
----
-
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+yarn install
+cp .env.template .env   # agrega tu token público de Mapbox (pk.)
+yarn dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Comando        | Descripción                  |
+| -------------- | ---------------------------- |
+| `yarn dev`     | Servidor de desarrollo       |
+| `yarn build`   | Build de producción          |
+| `yarn preview` | Previsualiza el build        |
+| `yarn lint`    | Revisa el código con ESLint  |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Notas
+
+- Usa solo tokens públicos (`pk.`); el token queda visible en el navegador. En producción, restríngelo a tu dominio desde [Mapbox](https://account.mapbox.com/access-tokens/).
+- Desplegado en Vercel (`vercel.json` define los headers de seguridad).
